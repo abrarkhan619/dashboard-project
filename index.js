@@ -83,6 +83,88 @@ app.get('/randomQuote', async (req, res) => {
     })
 })
 
+app.get('/sonarcloud', async (req, res) => {
+    let data = await getAPI.getSonarcloud();
+    console.log(data);
+    res.render('sonarcloud', {
+        data,
+        Title: data.pullRequests[0].title,
+        Branch: data.pullRequests[0].branch,
+        Date: data.pullRequests[0].analysisDate,
+        URL: data.pullRequests[0].url
+        
+    })
+})
+
+// app.get('/sentry', async (req, res) => {
+//     let data = await getAPI.getSentry();
+//     console.log(data);
+//     res.render('sentry', {
+//         data,
+//         title: data
+//     })
+// })
+
+app.get('/sentry', async (req, res) => {
+    let data = await getAPI.getSentry();
+    console.log(data)
+
+    sentryArray = []
+
+    for (const object of data){
+        let newObject = {
+            title: object.title,
+            culprit: object.culprit,
+            permalink: object.permalink,
+            lastSeen: object.lastSeen,
+            platform: object.platform
+        }
+
+        sentryArray.push(newObject);
+    }
+        
+    res.render('sentry', {
+        sentryArray, 
+    })
+})
+
+// app.get('/jenkins', async (req, res) => {
+//     let data = await getAPI.getJenkins();
+//     console.log(data);
+//     res.render('jenkins', {
+//         data,
+//         title: data.pipelines.lastActivity
+//     })
+// })
+
+app.get('/jenkins', async (req, res) => {
+    let data = await getAPI.getJenkins()
+    console.log(data)
+
+    jenkinsArray = []
+
+     for (const jenkinsData of data.jobs){
+            let newObject1 = {
+                name: jenkinsData.name,
+                url: jenkinsData.url,
+                color: jenkinsData.color
+            }
+            
+            jenkinsArray.push(newObject1);
+     }
+    res.render('jenkins', {
+        jenkinsArray,
+    })
+})
+
+app.get('/serviceStatus', async (req, res) => {
+    let data = await getAPI.getServiceStatus();
+    console.log(data);
+    res.render('serviceStatus', {
+        data,
+    })
+})
+
 app.listen(3000, () => { // creates a connection on a specified port - localhost: 3000 - response I should get whn I run is 'cannot GET/
     console.log('Listening on port 3000');
 })

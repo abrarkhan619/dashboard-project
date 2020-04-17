@@ -1,0 +1,19 @@
+<div class="sentryDiv">
+
+    <h1>Sentry API</h1>
+    <h2>TIS-Profile issues</h2>
+
+    <h3>To do</h3>
+    <p>Currently the list shows all issues, change to last 7 days?? </p>
+
+    <ul>
+        {{#each sentryArray}}
+        {{#each this}}
+
+        <li>{{@key}}: {{this}}</li>
+        {{/each}}
+        <p>-----</p>
+        {{/each}}
+    </ul>
+
+</div>

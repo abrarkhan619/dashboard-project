@@ -1,0 +1,12 @@
+<h1>Jenkins</h1>
+
+<p>Class Name: {{data}}</p>
+<ul>
+    {{#each jenkinsArray}}
+        {{#each this}}
+        
+        <li>{{@key}}: {{this}}</li>
+        {{/each}}
+        <p>-----</p>
+    {{/each}}
+</ul>
