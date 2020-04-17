@@ -12,8 +12,6 @@ const getAPI = require('./lib/getAPI');
 app.use(express.static(path.join(__dirname, 'public')))
 
 
-
-
 app.engine('.hbs', hbs({
     defaultLayout: 'layout',
     extname: '.hbs'
@@ -21,89 +19,37 @@ app.engine('.hbs', hbs({
 app.set('view engine', '.hbs')
 
 
-// getWeather()
-
-// four http methods: GET, POST, PUT & DELETE - you may see CRUD for other stacks which stands for CREADE, READ, UPDATE, DELETE
-
-// get is a function inside of express - for more info, look at express mpdule on NPMJS
-app.get('/', async (req, res) => { // each GET method should have a req and res. req = request, res = response, - standard naming convention
-    let data = await getAPI.getWeather();
-    console.log(data);
+app.get('/', async(req, res) => {
     res.render('index');
-    // res.sendFile(__dirname + '/index.html') // sendFile is for express only, no templating engine used.
-    // For each file you want to load, you need a GET.
 });
-
-app.get('/harryPotter', async (req, res) => {
-    let data = await getAPI.getHaryyPotter();
-    console.log(data);
-    res.render('harryPotter', {
-        data,
-        houseName: data
-    })
-});
-
-app.get('/pokemon', async (req, res) => {
-    let data = await getAPI.getPokemon();
-    console.log(data);
-    res.render('pokemon', {
-        data,
-        title: `This is your pokemon: ${data}`
-    })  
-})
-
-app.get('/chuckNorris', async (req, res) => {
-    let data = await getAPI.chuckNorris();
-    // data = JSON.parse(data);
-    console.log(data);
-    console.log(data.value);
-    
-    res.render('chuckNorris', {
-        data,
-        title: data.value
-    })  
-})
-
-app.get('/getJoke', async (req, res) => {
-    let data = await getAPI.getJoke();
-    console.log(data);
-    res.render('getJoke', {
-        data,
-        title: `Here is your joke: ${data.content}`
-    })
-})
-
-app.get('/randomQuote', async (req, res) => {
-    let data = await getAPI.randomQuote();
-    console.log(data);
-    res.render('randomQuote', {
-        data,
-        title: `Here is your Quote: ${data.content}`,
-        person: `- ${data.originator.name}`
-    })
-})
 
 app.get('/sonarcloud', async (req, res) => {
-    let data = await getAPI.getSonarcloud();
-    console.log(data);
+    let data = await getAPI.getSonarcloud()
+    console.log(data)
+
     res.render('sonarcloud', {
+        data,
+        name: data.branches[0].name,
+        isMain: data.branches[0].isMain,
+        date: data.branches[0].analysisDate,
+        Status: data.branches[0].status.qualityGateStatus
+    })
+})
+
+
+app.get('/sonarcloudPR', async (req, res) => {
+    let data = await getAPI.getSonarcloudPR();
+    console.log(data);
+
+    res.render('sonarcloudPR', {
         data,
         Title: data.pullRequests[0].title,
         Branch: data.pullRequests[0].branch,
         Date: data.pullRequests[0].analysisDate,
         URL: data.pullRequests[0].url
-        
     })
 })
 
-// app.get('/sentry', async (req, res) => {
-//     let data = await getAPI.getSentry();
-//     console.log(data);
-//     res.render('sentry', {
-//         data,
-//         title: data
-//     })
-// })
 
 app.get('/sentry', async (req, res) => {
     let data = await getAPI.getSentry();
@@ -128,14 +74,7 @@ app.get('/sentry', async (req, res) => {
     })
 })
 
-// app.get('/jenkins', async (req, res) => {
-//     let data = await getAPI.getJenkins();
-//     console.log(data);
-//     res.render('jenkins', {
-//         data,
-//         title: data.pipelines.lastActivity
-//     })
-// })
+
 
 app.get('/jenkins', async (req, res) => {
     let data = await getAPI.getJenkins()
@@ -165,6 +104,6 @@ app.get('/serviceStatus', async (req, res) => {
     })
 })
 
-app.listen(3000, () => { // creates a connection on a specified port - localhost: 3000 - response I should get whn I run is 'cannot GET/
+app.listen(3000, () => {
     console.log('Listening on port 3000');
 })
