@@ -29,3 +29,7 @@ async function listDatabases(client){
     console.log("Databases:");
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 };
+
+// Help docs:
+// https://github.com/mongodb-developer/nodejs-quickstart/blob/master/connection.js
+// https://www.mongodb.com/blog/post/quick-start-nodejs-mongodb--how-to-get-connected-to-your-database
